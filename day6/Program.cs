@@ -12,26 +12,23 @@ namespace day6
       var banks = File.ReadAllText("input.txt").Split("\t").Select(s => Convert.ToInt32(s)).ToArray();
       PrintBanks(banks);
       var cycles = Redistribute(banks);
-      Console.WriteLine("Cycles: " + cycles);
+      Console.WriteLine("Cycles in loop: " + cycles);
     }
 
     static int Redistribute(int[] banks)
     {
-      var cycles = 0;
-
-      var previousBanks = new HashSet<string>();
+      var previousBanks = new Dictionary<string, int>();
 
       while (true)
       {
         var hash = GetBanksHash(banks);
-        if(previousBanks.Contains(hash))
+        if(previousBanks.ContainsKey(hash))
         {
-          return cycles;
+          return previousBanks.Count - previousBanks[hash];
         }
-        previousBanks.Add(hash);
+        previousBanks.Add(hash, previousBanks.Count);
         var highestIndex = GetHighestIndex(banks);
         Reallocate(banks, highestIndex);
-        cycles++;
       }
     }
 
