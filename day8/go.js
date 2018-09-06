@@ -14,6 +14,10 @@ const writeRegister = (register, instruction, value) => {
     default:
       throw Error("Unknown instruction:", instruction);
   }
+
+  if (registers[register] > maxValue) {
+    maxValue = registers[register];
+  }
 };
 
 const evalCondition = (register, operator, value) => {
@@ -36,6 +40,7 @@ const evalCondition = (register, operator, value) => {
   }
 };
 
+var maxValue = 0;
 var registers = {};
 
 fs.readFileSync("input.txt")
@@ -68,4 +73,5 @@ fs.readFileSync("input.txt")
   });
 
 console.log(registers);
-console.log("Largest register value:", Math.max(...Object.values(registers)));
+console.log("Largest value during execution: ", maxValue);
+console.log("Current largest value:", Math.max(...Object.values(registers)));
